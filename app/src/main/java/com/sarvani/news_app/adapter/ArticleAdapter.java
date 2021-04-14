@@ -1,50 +1,61 @@
 package com.sarvani.news_app.adapter;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
-public class ArticleAdapter {
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-    @SerializedName("urlToImage")
-    @Expose
-    private String urlToImage;
-    @SerializedName("description")
-    @Expose
-    private String description;
-    @SerializedName("title")
-    @Expose
-    private String title;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
-    public String getUrlToImage() {
-        return urlToImage;
+import com.bumptech.glide.Glide;
+import com.sarvani.news_app.R;
+import com.sarvani.news_app.model.Article;
+
+import java.util.ArrayList;
+
+public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> {
+    private final Context context;
+
+    public ArticleAdapter(Context context, ArrayList<Article> articleArrayList) {
+        this.context = context;
+        this.articleArrayList = articleArrayList;
     }
 
-    public void setUrlToImage(String urlToImage) {
-        this.urlToImage = urlToImage;
-    }
+    ArrayList<Article>articleArrayList;
 
-    public String getDescription() {
-        return description;
-    }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    @NonNull
+    @Override
+    public ArticleAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_article,parent,false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public String toString() {
-        return "BashboardNews{"+
-                "urlToImage='"+urlToImage +'\''+
-                ", description='"+description+'\''+
-                ",title='"+title+'\''+
-                '}';
+    public void onBindViewHolder(@NonNull ArticleAdapter.ViewHolder holder, int position) {
+        Article article = articleArrayList.get(position);
+        holder.tvTitle.setText(article.getTitle());
+        Glide.with(context).load(article.getUrlToImage()).into(holder.imageViewCover);
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return articleArrayList.size();
+    }
+    public class ViewHolder extends RecyclerView.ViewHolder{
+        private final ImageView imageViewCover;
+        private final TextView tvTitle;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            imageViewCover = itemView.findViewById(R.id.article_img);
+            tvTitle = itemView.findViewById(R.id.article_title);
+
+        }
     }
 }
