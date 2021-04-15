@@ -18,7 +18,7 @@ public class ArticleRepository {
     private final ApiRequest apiRequest;
 
 
-    public ArticleRepository(ApiRequest apiRequest) {
+    public ArticleRepository() {
         this.apiRequest = RetrofitRequest.getRetrofitInstance().create(ApiRequest.class);
     }
 
